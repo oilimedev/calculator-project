@@ -1,0 +1,4 @@
+.git
+run.bat
+Dockerfile
+**/*_test.go
