@@ -31,7 +31,7 @@ export async function calculate(
 
   if (!response.ok) {
     throw new Error(
-      data.error?.message ?? body ?? "Calculation failed."
+      data.error?.message ?? (body || "Calculation failed.")
     );
   }
 

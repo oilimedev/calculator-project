@@ -24,7 +24,7 @@ func CalculatorHandler(w http.ResponseWriter, r *http.Request) {
 
 	var req utilities.CalculatorRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		utilities.WriteJSONError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -43,23 +43,13 @@ func CalculatorHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(bodyValidations) > 0 {
-		http.Error(w, fmt.Sprintf("%s property(ies) required", strings.Join(bodyValidations, ", ")), http.StatusBadRequest)
-		return
-	}
-
-	if req.Operator == "" {
-		http.Error(w, "operator property required", http.StatusBadRequest)
-		return
-	}
-
-	if req.Right == nil {
-		http.Error(w, "right property required", http.StatusBadRequest)
+		utilities.WriteJSONError(w, http.StatusBadRequest, fmt.Sprintf("%s property(ies) required", strings.Join(bodyValidations, ", ")))
 		return
 	}
 
 	result, err := calculator.Calculate(*req.Left, req.Operator, *req.Right)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		utilities.WriteJSONError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 

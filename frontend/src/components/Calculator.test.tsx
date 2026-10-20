@@ -13,7 +13,10 @@ function displayValue() {
 	return screen.getByLabelText('Calculator display').querySelector('.display__value');
 }
 
-afterEach(cleanup);
+afterEach(() => {
+	cleanup();
+	vi.restoreAllMocks();
+});
 
 beforeEach(() => {
 	calculateMock.mockReset();
@@ -65,6 +68,7 @@ describe('Calculator', () => {
 
 	it('shows an error when the API rejects a calculation', async () => {
 		calculateMock.mockRejectedValue(new Error('Division by zero.'));
+		const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {});
 		render(<Calculator />);
 
 		fireEvent.click(screen.getByRole('button', { name: '8' }));
@@ -73,5 +77,6 @@ describe('Calculator', () => {
 		fireEvent.click(screen.getByRole('button', { name: 'Equals' }));
 
 		await waitFor(() => expect(displayValue()?.textContent).toBe('Error'));
+		expect(alertMock).toHaveBeenCalledWith('Division by zero.');
 	});
 });

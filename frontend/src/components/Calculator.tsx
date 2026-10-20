@@ -21,9 +21,10 @@ export default function Calculator() {
 			setExpression(nextExpression);
 			setWaitingForValue(true);
 			return true;
-		} catch {
+		} catch (error) {
 			setDisplay('Error');
 			setWaitingForValue(true);
+			window.alert(error instanceof Error ? error.message : 'Calculation failed.');
 			return false;
 		} finally {
 			setIsCalculating(false);
