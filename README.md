@@ -124,7 +124,7 @@ The frontend displays the returned error message in an alert.
 
 ## Design Decisions and Assumptions
 
-- The backend is the source of truth for calculation results; no computations is made on the frontendm, every calculator is sent as a REST request.
+- The backend is the source of truth for calculation results; no computations are made on the frontend, every cauclation is sent as a REST request.
 - The API uses `float64` values. Results that become infinite or NaN are rejected, but floating-point values are not intended for exact financial calculations.
 - Division by zero, remainder by zero, unsupported operators, malformed JSON, and missing required fields return errors. Only way to send unsupported operators on the frontend is calling the API directly with other values.
 - The calculator is a small demonstration app: it has no database, authentication, or saved calculation history.
